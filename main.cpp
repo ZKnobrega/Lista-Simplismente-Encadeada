@@ -51,14 +51,21 @@ inicio:
 		aux = novo;
 		cout << "Digite o índice do valor a ser excluido: ";
 		cin >> ind;
+        if (ind !=1)
+        {
+            for (int i = 0; i < ind - 2; i++)
+            {
+                aux = aux->prox;
+            }
+            morta = aux->prox;
+            aux->prox = morta->prox;
+            cout << "\n\n";
+        }
+        else
+        {
+            novo = aux -> prox;
+        }
 
-		for (int i = 0; i < ind - 2; i++)
-		{
-			aux = aux->prox;
-		}
-		morta = aux->prox;
-		aux->prox = morta->prox;
-		cout << "\n\n";
 		goto inicio;
 
 		break;
