@@ -84,7 +84,7 @@ inicio:
 			int cont = 0;
 			do
 			{
-				cout << cont + 1 << "º " << aux->valor << " | ";
+				cout << cont + 1 << "º " << aux->valor << endl;
 				aux = aux->prox; //O ptr 'aux' agora vai apontar para o proximo valor
 				cont++;
 			} while (aux != NULL);
