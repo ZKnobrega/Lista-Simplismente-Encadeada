@@ -16,18 +16,15 @@ int main()
 	no *lista;
 	lista = NULL;
 	no *novo;
-	no *posi;
-
 	int num, posicao;
-
 	no *aux; //usado em excluir e pesquisar e inserir por posição.
 	int op;
 	int cont = 0;
-
 inicio:
-	cout << "Escolha a opção desejada: \n1 - Inserir.\n2 - Excluir.\n3 - Listar.\n4 - limpar.\n5 - Sair.\n6 - Inserir por Posição." << endl;
+	cout << "Escolha a opção desejada: \n1 - Inserir.\n2 - Excluir.\n3 - Listar.\n4 - limpar.\n5 - Inserir por Posição.\n6 - Sair." << endl;
 	cout << "Escolha: ";
 	cin >> op;
+	cout << "\n\n";
 	switch (op)
 	{
         cont = 0;
@@ -126,13 +123,8 @@ inicio:
 		cout << "\n\n";
 		goto inicio;
 		break;
-	case 5:
-		//Sair
-		cout << "Obrigado Por usar o Programa.";
-		break;
 
-
-    case 6:
+    case 5:
         // inserir por posição
         aux = lista;
         cont = 0;
@@ -190,6 +182,10 @@ inicio:
 		goto inicio;
         break;
 
+        case 6:
+		//Sair
+		cout << "Obrigado Por usar o Programa.";
+		break;
 
 	default:
 		cout << "Opção inválida!" << endl;
