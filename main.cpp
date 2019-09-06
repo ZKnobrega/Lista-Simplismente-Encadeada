@@ -78,11 +78,11 @@ inicio:
             aux->prox = morta->prox;
             cout << "\n\n";
         }
-        if (ind == 1)
+        else if (ind == 1)
         {
             novo = aux -> prox;
         }
-        if (ind < 1 | ind > cont)
+        else if (ind < 1 | ind > cont)
         {
             cout << "Opção Invalida!!\n";
         }
@@ -101,7 +101,7 @@ inicio:
 		else
 		{
 			cout << "\n\n" << endl << "\nA lista é:" << endl;
-			aux = lista;
+			aux = novo;
 			int cont = 0;
 			do
 			{
