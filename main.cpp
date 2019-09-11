@@ -146,12 +146,12 @@ inicio:
         {
             aux = lista;
             anterior = lista;
-                for (int i=0; i<posicao-1; ++i)
+                for (int i=0; i<posicao; ++i)
                 {
                     aux = aux -> prox;
                 }
 
-            for (int i=0; i<posicao-2; ++i)
+            for (int i=0; i<posicao-1; ++i)
                 {
                     anterior = anterior -> prox;
                 }
