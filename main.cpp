@@ -1,195 +1,157 @@
 #include <iostream>
-#include <locale>
 #include <stdlib.h>
-
+#include <locale.h>
 using namespace std;
+//////FILA !!!!//////
 
-typedef struct no
-{
-	int valor;
-	struct no *prox;
-} no;
+struct valor{
+    int num;
+    struct valor *prox;
+}valor;
 
-int main()
-{
-	setlocale(LC_ALL, "Portuguese");
-	no *lista;
-	lista = NULL;
-	no *novo;
-	int num, posicao;
-	no *aux; //usado em excluir e pesquisar e inserir por posição.
-	int op;
-	int cont = 0;
-inicio:
-	cout << "Escolha a opção desejada: \n1 - Inserir.\n2 - Excluir.\n3 - Listar.\n4 - limpar.\n5 - Inserir por Posição.\n6 - Sair." << endl;
-	cout << "Escolha: ";
-	cin >> op;
-	cout << "\n\n";
-	switch (op)
-	{
-        cont = 0;
-        do
-			{
-				cout << cont + 1 << "º " << aux->valor << endl;
-				aux = aux->prox; //O ptr 'aux' agora vai apontar para o proximo valor
-				cont++;
-			} while (aux != NULL);
+typedef struct valor Elem;
+
+struct fila{
+    struct valor *inicio;
+    struct valor *fim;
+}fila;
+
+typedef struct fila Fila;
+
+Fila* cria_Fila(){
+    Fila* fi = new Fila;
+    if(fi != NULL){
+        fi->fim = NULL;
+        fi->inicio = NULL;
+    }
+    return fi;
+}
+
+void libera_Fila(Fila* fi){
+    if(fi != NULL){
+        Elem* no;
+        while(fi->inicio != NULL){
+            no = fi->inicio;
+            fi->inicio = fi->inicio->prox;
+            free(no);
+        }
+        free(fi);
+    }
+}
+
+int consulta_Fila(Fila* fi, int valor){
+    if(fi == NULL){
+        return 0;}
+    if(fi->inicio == NULL){
+        return 0;}
+    valor = fi->inicio->num;
+    return 1;
+}
+
+int insere_Fila(Fila* fi,int valor){
+    if(fi == NULL){
+        return 0;}
+    Elem *no = new Elem;
+    if(no == NULL){
+        return 0;}
+    no->num = valor;
+    no->prox = NULL;
+    if(fi->fim == NULL){
+        fi->inicio = no;}
+    else{
+        fi->fim->prox = no;}
+    fi->fim = no;
+    return 1;
+}
+
+int remove_Fila(Fila* fi){
+    if(fi == NULL){
+        return 0;}
+    if(fi->inicio == NULL){
+        return 0;}
+    Elem *no = fi->inicio;
+    fi->inicio = fi->inicio->prox;
+    if(fi->inicio == NULL){
+        fi->fim = NULL;}
+    free(no);
+    return 1;
+}
+
+int tamanho_Fila(Fila* fi){
+    if(fi == NULL){
+        return 0;}
+    int cont=0;
+    Elem* no = fi->inicio;
+    while(no != NULL){
+        cont++;
+        no = no->prox;
+    }
+    return cont;
+}
+
+int Fila_vazia(Fila* fi){
+    if(fi == NULL){
+        return 1;}
+    if(fi->inicio == NULL){
+        return 1;}
+    return 0;
+}
 
 
-	case 1:
-		//inserir;
+int imprime_Fila(Fila* fi){
+    if(fi == NULL){
+        cout << "Fila Vazia!!!";}
+    Elem* no = fi->inicio;
+    while(no != NULL){
+        cout << no->num << endl;
+        no = no->prox;
+    }
+}
 
-		cout << "Digite um valor inteiro para inserir na lista: ";
-		cin >> num;
-		novo = new no; //O ponteiro 'novo' recebe o local dinâmicamente indicado por NEW com o tamanho de espaço para variavel do tipo no.
-		novo -> valor = num; // 'novo' já com o local de memoria aloocado apontando para o valor que irá receber o numero informado pelo usuario
-		novo -> prox = lista; //Lista inicialmente vale NULL, depois de ser inserido algum valor 'lista' vai ser igual ao ptr anterior sendo assim "liata" sempre será o ultimo valor incrementado na lista apontando para o seu proximo torndando 'lista' a cabeça.6
-		lista = novo; // para não perdermos o valor de referencia da lista.
-		cout << "\n\n";
-		goto inicio;
+int main(){
+    int valor,insere,tamanho,remover,op;
 
+    Fila *fi=cria_Fila();
+    do{
+    cout << "1 - Inserir\n2 - Listar\n3 - Remover\n4 - Tamanho\n5 - Sair\n" << endl;
+    cout << "opcao: ";
+    cin >> op;
 
-	case 2:
-		//excluir;
-		int ind; // será a posição da variavel a ser excluida.
-		no *morta; // o ponteiro que irá retirar a variavel da lista.
-		aux = novo;
-		cout << "A lista é:\n";
-        cont = 0;
-		do
-        {
-				cout << cont + 1 << "º " << aux->valor << endl;
-				aux = aux->prox; //O ptr 'aux' agora vai apontar para o proximo valor
-				cont++;
-        }while (aux != NULL);
-        cout << "\nDigite a posição do valor a ser excluido: "<< endl;
-		cin >> ind;
-		aux = novo;
-        if (ind != 1 && ind <= cont)
-        {
+    switch(op){
 
-            for (int i = 0; i < ind - 2; i++)
-            {
-                aux = aux->prox;
+        case(1):
+            cout << "Inserir: ";
+            cin >> valor;
+            insere= insere_Fila(fi,valor);
+            if(insere=!1){
+                cout << "Deu Merda....\n";
             }
-
-
-            morta = aux->prox;
-            aux->prox = morta->prox;
-            cout << "\n\n";
-        }
-        else if (ind == 1)
-        {
-            novo = aux -> prox;
-        }
-        else if (ind < 1 | ind > cont)
-        {
-            cout << "Opção Invalida!!\n";
-        }
-
-		goto inicio;
-		break;
-
-
-	case 3:
-		//listar
-
-		if (lista == NULL)
-		{
-			cout << "Lista vazia!" << endl;
-		}
-		else
-		{
-			cout << "\n\n" << endl << "\nA lista é:" << endl;
-			aux = novo;
-			int cont = 0;
-			do
-			{
-				cout << cont + 1 << "º " << aux->valor << endl;
-				aux = aux->prox; //O ptr 'aux' agora vai apontar para o proximo valor
-				cont++;
-			} while (aux != NULL);
-			cout << "\n\n";
-			cout << "A lista possui " << cont << " Valores." << endl;
-		}
-		cout << "\n\n";
-		goto inicio;
-		break;
-
-
-	case 4:
-		//limpar;
-		lista = NULL; //perde-se o local do ultimo valor informado
-		cout << "\n\n";
-		goto inicio;
-		break;
-
-    case 5:
-        // inserir por posição
-        aux = lista;
-        cont = 0;
-        do
-			{
-				aux = aux->prox; //O ptr 'aux' agora vai apontar para o proximo valor
-				cont++;
-			} while (aux != NULL);
-        no *anterior;
-        cout << "Informe o Valor a ser inserido: \n";
-		cin >> num;
-        int posicao;
-        cout << "Informe a posição a ser inserida: \n";
-        cin >> posicao;
-        novo = new no; //O ponteiro 'novo' recebe o local indicado por malloc(); do tamanho definido por sizeof();
-		novo->valor = num;
-
-        if (posicao > 1 && posicao <= cont)
-        {
-            aux = lista;
-            anterior = lista;
-                for (int i=0; i<posicao; ++i)
-                {
-                    aux = aux -> prox;
-                }
-
-            for (int i=0; i<posicao-1; ++i)
-                {
-                    anterior = anterior -> prox;
-                }
-
-            anterior -> prox = novo;
-
-            if (posicao-1 == cont)
-            {
-
-                novo -> prox =NULL;
-            }
-            else
-            {
-                novo -> prox = aux;
-            }
-
-        }
-
-        else if(posicao == 1){
-            novo -> valor = num;
-            novo -> prox = lista; //Lista inicialmente vale NULL, depois de ser inserido algum valor 'lista' vai ser igual ao ptr anterior
-            lista = novo;
-        }
-        else
-            {
-                cout << "Valor Invalido"<< endl;
-            }
-		goto inicio;
         break;
 
-        case 6:
-		//Sair
-		cout << "Obrigado Por usar o Programa.";
-		break;
+        case(2):
+        cout << "Fila:\n";
+        imprime_Fila(fi);
+        cout << "\n\n\n";
+        break;
 
-	default:
-		cout << "Opção inválida!" << endl;
+        case(3):
+            remover = remove_Fila(fi);
+            cout << "Removido com sucesso!\n\n\n";
+        break;
 
-		goto inicio;
-	}
+        case(4):
+            tamanho= tamanho_Fila(fi);
+            cout << "Quantidade de elementos da fila: " << tamanho;
+            cout << "\n";
+        break;
+        default:
+            cout << "opicao invalida!\n\n\n";
+        break;
+
+        case(5):
+        break;
+
+    }
+    }while(op!=5);
+    return 0;
 }
